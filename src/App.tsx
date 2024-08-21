@@ -1,43 +1,47 @@
-import { useState } from 'react'
+import { SyntheticEvent, useState } from 'react'
 import './App.css'
+
+import { ChangeEvent } from 'react';
 
 function App() {
 
-    const [toDoItems, setTodoItems] = useState<string[]>([]);
+    const [toDoItems, setToDoItems] = useState<string[]>([]);
 
-    function onChangeCheckbox(event) {
+    function handleCheckbox(event) {
         console.log(event);
+        console.log(toDoItems);
+        if(event.target.checked){
+            
+        }
     }
 
+    
+    const handleInput = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        
+        console.log("event:", event);
+        console.log("event.target: ", event.target);
+
+        console.log("event.currentTarget.value: ", event.currentTarget.value);
+        if(event.key == "Enter"){
+            setToDoItems((toDoItems) => {return [...toDoItems, event.currentTarget.value]});
+        }
+    };
+
+    /*
+    <input id={"checkbox" + index} type="checkbox" onChange={(event) => (handleCheckbox(event))} />
+    */
     return (
 
-        <form>
-            <input
-                onChange={
-                    (event) => {
-                        console.log(event);
-                        console.log(event.key);
-                        console.log(event.currentTarget.value);
-                        if (event.key == "Enter") {
-                            setTodoItems(oldToDoItems => [...oldToDoItems, event.currentTarget.value])
-                        }
-                    )}
-                placeholder="Add to ToDo items"
-            />
+        <form id="myToDoForm" onSubmit={e => {e.preventDefault();}}>
+            <input id="myInput" onKeyDown={handleInput} placeholder="Add to ToDo items" />
 
-
-            
 
             <ul>
                 {
-                    toDoItems.map((item, index) => (<li key={index}>
-                        {item} <input id={"checkbox" + index} type="checkbox" onChange={(event) => (onChangeCheckbox(event))} />
-                    </li>))
+                    toDoItems.map((item, index) => (
+                    <li key={index}> {item} </li>))
                 }
             </ul>
-
-
-
 
         </form>
     )
