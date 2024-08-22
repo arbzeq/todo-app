@@ -8,21 +8,26 @@ function App() {
 
     
     function handleCheckbox(event: ChangeEvent) {
+        let targetElement = (event.target as HTMLInputElement);
         console.log(event);
         console.log(toDoItems);
-        let listID = Number((event.currentTarget as HTMLInputElement).id);
+        let listID = Number(targetElement.id);
         console.log(listID);
-        /*
-        if(event.target.checked){
-            setToDoItems((toDoItems) => (toDoItems.filter((_, index) => {return index != listID })));
+        
+        if(targetElement.checked){
+            targetElement.parentElement.classList.add("lineThrough"); 
+        }else{
+            targetElement.parentElement.classList.remove("lineThrough");
         }
-        */
+        
     }
 
-    function handleRemoval(event) {
+    function handleRemoval(event: ChangeEvent) {
         console.log(event);
         console.log(toDoItems);
-        let listID = Number((event.currentTarget as HTMLInputElement).id);
+        let targetElement = (event.target as HTMLInputElement);
+        
+        let listID = Number(targetElement.id);
         console.log(listID);
         setToDoItems((toDoItems) => (toDoItems.filter((_, index) => {return index != listID })));
     }
@@ -36,10 +41,10 @@ function App() {
             setToDoItems((toDoItems) => {return [...toDoItems, (event.target as HTMLInputElement).value]});
         }
     };
-
     /*
-     />
-    */
+    
+    */ 
+
     return (
 
         <form id="myToDoForm" onSubmit={e => {e.preventDefault();}}>
@@ -48,15 +53,12 @@ function App() {
 
             <ul>
                 {
-                    toDoItems.map((item, index) => {
-                        return <li key={index} >
-                            {item}
-                            
-                            <input id={String(index)} type="checkbox" onChange={(event) => (handleCheckbox(event))}  />
-                            <button id={String(index)} onClick={(event) => (handleRemoval(event))} />
-                            
+                    toDoItems.map((item, index) => 
+                        (<li key={index} >
+                            {item} <input id={String(index)} type="checkbox" onChange={(event) => (handleCheckbox(event))}  />
+                            <button type="button" id={String(index)} onClick={handleRemoval} >Remove item</button>
                         </li>
-                    })
+                    ))
                 }
             </ul>
 
