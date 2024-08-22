@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { ChangeEvent, SyntheticEvent, useState } from 'react'
 import './App.css'
 
 
@@ -6,30 +6,39 @@ function App() {
 
     const [toDoItems, setToDoItems] = useState<string[]>([]);
 
-    /*
-    function handleCheckbox(event) {
+    
+    function handleCheckbox(event: ChangeEvent) {
         console.log(event);
         console.log(toDoItems);
+        let listID = Number((event.currentTarget as HTMLInputElement).id);
+        console.log(listID);
+        /*
         if(event.target.checked){
-            
+            setToDoItems((toDoItems) => (toDoItems.filter((_, index) => {return index != listID })));
         }
+        */
     }
-    */
+
+    function handleRemoval(event) {
+        console.log(event);
+        console.log(toDoItems);
+        let listID = Number((event.currentTarget as HTMLInputElement).id);
+        console.log(listID);
+        setToDoItems((toDoItems) => (toDoItems.filter((_, index) => {return index != listID })));
+    }
+
+    
 
     
     const handleInput = (event: React.KeyboardEvent<HTMLInputElement>) => {
         
-        console.log("event:", event);
-        console.log("event.target: ", event.target);
-
-        console.log("event.currentTarget.value: ", event.currentTarget.value);
         if(event.key == "Enter"){
-            setToDoItems((toDoItems) => {return [...toDoItems, event.currentTarget.value]});
+            setToDoItems((toDoItems) => {return [...toDoItems, (event.target as HTMLInputElement).value]});
         }
     };
 
     /*
-    <input id={"checkbox" + index} type="checkbox" onChange={(event) => (handleCheckbox(event))} />
+     />
     */
     return (
 
@@ -39,8 +48,15 @@ function App() {
 
             <ul>
                 {
-                    toDoItems.map((item, index) => (
-                    <li key={index}> {item} </li>))
+                    toDoItems.map((item, index) => {
+                        return <li key={index} >
+                            {item}
+                            
+                            <input id={String(index)} type="checkbox" onChange={(event) => (handleCheckbox(event))}  />
+                            <button id={String(index)} onClick={(event) => (handleRemoval(event))} />
+                            
+                        </li>
+                    })
                 }
             </ul>
 
