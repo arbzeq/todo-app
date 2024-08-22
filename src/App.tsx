@@ -1,12 +1,12 @@
-import { SyntheticEvent, useState } from 'react'
+import { useState } from 'react'
 import './App.css'
 
-import { ChangeEvent } from 'react';
 
 function App() {
 
     const [toDoItems, setToDoItems] = useState<string[]>([]);
 
+    /*
     function handleCheckbox(event) {
         console.log(event);
         console.log(toDoItems);
@@ -14,6 +14,7 @@ function App() {
             
         }
     }
+    */
 
     
     const handleInput = (event: React.KeyboardEvent<HTMLInputElement>) => {
